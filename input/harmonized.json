@@ -1,0 +1,455 @@
+{
+  "source": "db1",
+  "indicators": [
+    {
+      "id": 1,
+      "name": "Total Screened Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND b.encounter_type_name = 'Screening'"
+    },
+    {
+      "id": 2,
+      "name": "Total Patients Screened Out of AETC",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Screening' AND b.concept_name IN ('Patient Referred To')"
+    },
+    {
+      "id": 3,
+      "name": "Total Registered Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Registration'"
+    },
+    {
+      "id": 4,
+      "name": "Total Referred In Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Screening' AND b.concept_name = 'Is Patient Referred' AND LOWER(COALESCE(b.coded_value_name, '')) = 'yes'"
+    },
+    {
+      "id": 5,
+      "name": "Total Triaged Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Triage Result'"
+    },
+    {
+      "id": 6,
+      "name": "Total Emergency Triage Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Triage Result' AND LOWER(COALESCE(b.value_text, '')) LIKE '%red%'"
+    },
+    {
+      "id": 7,
+      "name": "Total Priority Triage Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Triage Result' AND LOWER(COALESCE(b.value_text, '')) LIKE '%yellow%'"
+    },
+    {
+      "id": 8,
+      "name": "Total Queue Triage Patients",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name = 'Triage Result' AND LOWER(COALESCE(b.value_text, '')) LIKE '%green%'"
+    },
+    {
+      "id": 9,
+      "name": "Area Attendance - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%resuscitation%'"
+    },
+    {
+      "id": 10,
+      "name": "Area Attendance - Priority area",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%priority area%'"
+    },
+    {
+      "id": 11,
+      "name": "Area Attendance - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%gynae bench%'"
+    },
+    {
+      "id": 12,
+      "name": "Area Attendance - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%surgical bench%'"
+    },
+    {
+      "id": 13,
+      "name": "Area Attendance - Trauma",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%trauma%'"
+    },
+    {
+      "id": 14,
+      "name": "Area Attendance - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%short stay ward%'"
+    },
+    {
+      "id": 15,
+      "name": "Area Attendance - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%medical bench%'"
+    },
+    {
+      "id": 16,
+      "name": "Area Attendance - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT ca.visit_id) FROM (SELECT b.visit_id, b.coded_value_name AS care_area FROM ({base_query}) b WHERE b.program_id = 30 AND b.concept_name = 'Patient care area' AND b.encounter_datetime <= '{end_date}') ca WHERE LOWER(COALESCE(ca.care_area, '')) LIKE '%isolation room%'"
+    },
+    {
+      "id": 17,
+      "name": "Total AETC Visits",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30"
+    },
+    {
+      "id": 18,
+      "name": "Admission - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 19,
+      "name": "Discharge Home - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 20,
+      "name": "Absconded - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 21,
+      "name": "Transfer Out - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 22,
+      "name": "Refused Hospital Treatment - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 23,
+      "name": "Death - Resuscitation",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 24,
+      "name": "Admission - Priority area",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 25,
+      "name": "Discharge Home - Priority area",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 26,
+      "name": "Absconded - Priority area",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 27,
+      "name": "Transfer Out - Priority area",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 28,
+      "name": "Refused Hospital Treatment - Priority area",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 29,
+      "name": "Death - Priority area",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 30,
+      "name": "Admission - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 31,
+      "name": "Discharge Home - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 32,
+      "name": "Absconded - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 33,
+      "name": "Transfer Out - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 34,
+      "name": "Refused Hospital Treatment - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 35,
+      "name": "Death - Gynae Bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 36,
+      "name": "Admission - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 37,
+      "name": "Discharge Home - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 38,
+      "name": "Absconded - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 39,
+      "name": "Transfer Out - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 40,
+      "name": "Refused Hospital Treatment - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 41,
+      "name": "Death - Surgical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 42,
+      "name": "Admission - Trauma",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 43,
+      "name": "Discharge Home - Trauma",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 44,
+      "name": "Absconded - Trauma",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 45,
+      "name": "Transfer Out - Trauma",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 46,
+      "name": "Refused Hospital Treatment - Trauma",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 47,
+      "name": "Death - Trauma",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 48,
+      "name": "Admission - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 49,
+      "name": "Discharge Home - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 50,
+      "name": "Absconded - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 51,
+      "name": "Transfer Out - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 52,
+      "name": "Refused Hospital Treatment - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 53,
+      "name": "Death - Short stay ward",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 54,
+      "name": "Admission - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 55,
+      "name": "Discharge Home - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 56,
+      "name": "Absconded - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 57,
+      "name": "Transfer Out - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 58,
+      "name": "Refused Hospital Treatment - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 59,
+      "name": "Death - Medical bench",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 60,
+      "name": "Admission - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 61,
+      "name": "Discharge Home - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 62,
+      "name": "Absconded - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 63,
+      "name": "Transfer Out - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 64,
+      "name": "Refused Hospital Treatment - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 65,
+      "name": "Death - Isolation room",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 66,
+      "name": "Total Admission",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%admission%'"
+    },
+    {
+      "id": 67,
+      "name": "Total Discharge Home",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%discharge home%'"
+    },
+    {
+      "id": 68,
+      "name": "Total Absconded",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%absconded%'"
+    },
+    {
+      "id": 69,
+      "name": "Total Transfer Out",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%transfer out%'"
+    },
+    {
+      "id": 70,
+      "name": "Total Refused Hospital Treatment",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%refused hospital treatment%'"
+    },
+    {
+      "id": 71,
+      "name": "Total Death",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(b.value_text,'')) LIKE '%death%'"
+    },
+    {
+      "id": 72,
+      "name": "Admissions to 4A",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='4A Female ward' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 73,
+      "name": "Admissions to 3B",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='3B Male medical' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 74,
+      "name": "Admissions to 5A",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='5A Male Surgical Ward General Ward High Dependency Unit' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 75,
+      "name": "Admissions to 5B",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text IN ('5B Female Surgical Ward General Ward High Dependency Unit','5B Neurosurgical Ward General Ward High Dependency Unit') AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 76,
+      "name": "Admissions to 6A",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='6A Orthopaedic male' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 77,
+      "name": "Admissions to 2A",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='2A Oncology Ward General Ward High Dependency Unit' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 78,
+      "name": "Admissions to Renal",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='2B Renal And Dermatology Ward' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 79,
+      "name": "Admissions to Gynae",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text IN ('Gynaecology ward- Main','Gynecology Ward General Ward High Dependency Unit','MSF ward - Gynaecology') AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 80,
+      "name": "Admissions to Theatre",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='Theatre' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 81,
+      "name": "Admissions to TB",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='3A Tb Ward' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 82,
+      "name": "Admissions to ICU",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='Intensive Care Unit (ICU)' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 83,
+      "name": "Admissions to 4A HDU",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text IN ('4A Female Medical Ward General Ward High Dependency Unit','4A HDU') AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 84,
+      "name": "Admissions to 3A HDU",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='3A Hdru High Dependency Respiratory Unit' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 85,
+      "name": "Admissions to 3B HDU",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text IN ('3B Female Medical Ward General Ward High Dependency Unit','3B High Dependency Unit') AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 86,
+      "name": "Admissions to ENT",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text IN ('Ent','ENT QECH') AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 87,
+      "name": "Admissions to Eye",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text='Ophthalmology' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 88,
+      "name": "Admissions to LW",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND b.value_text IN ('Main Labour ward','Labour Ward General Ward High Dependency Unit') AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 89,
+      "name": "Total Admissions to Wards",
+      "sql": "SELECT COUNT(DISTINCT b.visit_id) FROM ({base_query}) b WHERE b.program_id = 30 AND  b.encounter_type_name='Disposition' AND b.concept_name='Ward' AND EXISTS (SELECT 1 FROM ({base_query}) d WHERE d.program_id = 30 AND d.visit_id=b.visit_id AND d.encounter_datetime BETWEEN '{start_date}' AND '{end_date}' AND d.encounter_type_name IN ('Disposition','Awaiting Specialty') AND LOWER(COALESCE(d.value_text,'')) LIKE '%admission%')"
+    },
+    {
+      "id": 90,
+      "name": "Brought In Dead",
+      "sql": "SELECT COUNT(DISTINCT dr.id) FROM death_reports dr WHERE TIMESTAMP(dr.date_of_arrival, COALESCE(NULLIF(dr.time_of_arrival, ''), '00:00:00')) BETWEEN '{start_date}' AND '{end_date}'"
+    }
+  ]
+}
