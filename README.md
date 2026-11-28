@@ -20,7 +20,7 @@ brew install python
 2. Open Terminal and change to the project directory:
 
 ```bash
-cd validate_aetc
+cd validate_aetc_migration_migration
 ```
 
 3. Create a virtual environment:
@@ -49,7 +49,7 @@ python -m pip install -r requirements.txt
 2. Open PowerShell and change to the project directory:
 
 ```powershell
-cd validate_aetc
+cd validate_aetc_migration
 ```
 
 3. Create a virtual environment:
@@ -96,7 +96,7 @@ sudo apt install python3 python3-pip python3-venv
 2. Change to the project directory:
 
 ```bash
-cd validate_aetc
+cd validate_aetc_migration
 ```
 
 3. Create a virtual environment:
